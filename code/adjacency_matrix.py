@@ -66,4 +66,4 @@ if __name__ == "__main__":
     base_path = "/Users/achayapathy/Documents/Aditya/repositories/Fake-News-Detection/dataset/"
 
     adj = AdjacencyMatrix(base_path)
-    adj.get_adjacency_matrix()
+    res = adj.get_adjacency_matrix()
