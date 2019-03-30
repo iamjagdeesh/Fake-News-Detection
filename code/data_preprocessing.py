@@ -1,8 +1,8 @@
 import pandas as pd
-import numpy
 import os
 import json
-import tensorflow as tf
+import tokenizer
+import bert.extract_features as xf
 import tokenization
 class DataPreProcessing(object):
     def __init__(self):
@@ -16,8 +16,8 @@ class DataPreProcessing(object):
     def extract_desc_from_files(self, file_path, data_list):
         with open(file_path) as fd:
             json_data = json.load(fd)
-            data_list.append(tokenization.Tokenizer(json_data['text']).get_all_tokens())
-
+           # data_list.append(xf.convert_examples_to_features(json_data['text'], 1, tokenizer))
+            data_list.append(json_data['text'].replace("\n", " "))
     def read_json_news_files(self):
         for file in os.listdir(self.fake_news_loc):
             if file.endswith(".json"):
@@ -26,6 +26,7 @@ class DataPreProcessing(object):
             if file.endswith(".json"):
                 self.extract_desc_from_files(os.path.join(self.real_news_loc, file), self.real_news_desc_list)
         fake_news_df = pd.DataFrame({0: self.fake_news_desc_list})
+        fake_news_df.to_csv("fake_news.csv", index=False, header=False)
         fake_news_df.columns = ["text"]
         fake_news_df["label"] = "Fake"
         real_news_df = pd.DataFrame({0: self.real_news_desc_list})
@@ -34,6 +35,11 @@ class DataPreProcessing(object):
         combined_df = pd.concat([real_news_df, fake_news_df])
         a=1
 
+    def test_bert(self):
+        examples = xf.read_examples(os.path.join(self.fake_news_loc,"fake_news.csv"))
+        features = xf.convert_examples_to_features(examples, 91, tokenization.Tokenizer)
+        a=1
+
 if __name__ == "__main__":
     ob = DataPreProcessing()
-    ob.read_json_news_files()
+    ob.test_bert()

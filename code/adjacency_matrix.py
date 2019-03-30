@@ -54,8 +54,8 @@ class AdjacencyMatrix:
 
         result_df = pd.DataFrame(result, columns=nodes, index=nodes)
 
-        print("Dumping the Adjacency Matrix to CSV")
-        result_df.to_csv(self.base_path + "adjacency_matrix.csv")
+        # print("Dumping the Adjacency Matrix to CSV")
+        # result_df.to_csv(self.base_path + "adjacency_matrix.csv")
 
         print("Done")
 
@@ -63,7 +63,7 @@ class AdjacencyMatrix:
 
 
 if __name__ == "__main__":
-    base_path = "/Users/achayapathy/Documents/Aditya/repositories/Fake-News-Detection/dataset/"
+    base_path = "/Users/jagde/Documents/ASU/SWM/Project/Fake-News-Detection/dataset/"
 
     adj = AdjacencyMatrix(base_path)
     res = adj.get_adjacency_matrix()
