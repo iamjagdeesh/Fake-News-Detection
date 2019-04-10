@@ -1,8 +1,7 @@
-import pandas as pd
 import numpy as np
 import scipy.sparse as sp
-from code.adjacency_matrix import AdjacencyMatrix
-from code.feature_matrix import FeatureMatrix
+from codebase.adjacency_matrix import AdjacencyMatrix
+from codebase.feature_matrix import FeatureMatrix
 
 class GATInputGenerator:
     def __init__(self):
@@ -24,9 +23,14 @@ class GATInputGenerator:
             #print("temp", temp_res)
             # res = np.concatenate((res, temp_res), axis=0)
             res.append(list(temp_res))
-        print(res)
+        # print(res)
 
-        return sp.csr_matrix(res)
+        # max_len = max([len(each) for each in res])
+        max_len = len(res)
+        for each in res:
+            each.extend([0] * (max_len - len(each)))
+
+        return sp.csr_matrix(res, dtype=int)
 
     def getFeatures(self):
         feature_df = self.FM.get_feature_matrix()
@@ -37,20 +41,23 @@ class GATInputGenerator:
         feature_df.drop(['label'], axis=1)
         feature_np = feature_df.values
         # print(type(feature_np))
-        res = feature_np
+        res = [list(xi) for xi in feature_np]
         for i in range(feature_np.shape[0]):
             #print("Adj ",i," Row ", adj_np[i])
             temp_res = np.nonzero(np.array(feature_np[i]))[0]
             #print("temp", temp_res)
             # res = np.concatenate((res, temp_res), axis=0)
             res.append(list(temp_res))
-        print(res)
+        # max_len = max([len(each) for each in res])
+        max_len = len(res)
+        for each in res:
+            each.extend([0] * (max_len - len(each)))
 
-        return sp.csr_matrix(res)
+        return sp.csr_matrix(res, dtype=int)
 
     def getYs(self):
         yTrain = yVal = yTest = self.label_zip[:]
-        train_mask, val_mask, test_mask = [False] * len(yTrain)
+        train_mask = val_mask = test_mask = [False] * len(yTrain)
         n = len(yTrain)
         train_range = range(0, int(n * 0.5))
         val_range = range(int(n * 0.5), int(n * 0.75))
@@ -74,6 +81,7 @@ class GATInputGenerator:
     def getComps(self):
         adj = self.getAdj()
         features = self.getFeatures()
+
         yTrain, yVal, yTest, train_mask, val_mask, test_mask = self.getYs()
 
         return adj, features, yTrain, yVal, yTest, train_mask, val_mask, test_mask
