@@ -63,7 +63,7 @@ class AdjacencyMatrix:
 
 
 if __name__ == "__main__":
-    base_path = "/Users/jagde/Documents/ASU/SWM/Project/Fake-News-Detection/dataset/"
+    base_path = "../dataset"
 
     adj = AdjacencyMatrix(base_path)
     res = adj.get_adjacency_matrix()
