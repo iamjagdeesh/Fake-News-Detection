@@ -3,10 +3,9 @@ import scipy.sparse as sp
 import numpy as np
 import tensorflow as tf
 import argparse
-
-from models import GAT
-from models import SpGAT
-from utils import process
+from codebase.models import GAT
+from codebase.models import SpGAT
+from codebase.utils import process
 
 checkpt_file = 'pre_trained/cora/mod_cora.ckpt'
 

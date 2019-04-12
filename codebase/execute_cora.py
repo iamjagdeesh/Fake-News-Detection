@@ -12,7 +12,7 @@ dataset = 'cora'
 
 # training params
 batch_size = 1
-nb_epochs = 100000
+nb_epochs = 100
 patience = 100
 lr = 0.005  # learning rate
 l2_coef = 0.0005  # weight decay
@@ -40,6 +40,7 @@ adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = gat_ip.
 features, spars = process.preprocess_features(features)
 
 nb_nodes = adj.shape[0] # = features.shape[0]
+nb_feature_rows = features.shape[0]
 ft_size = features.shape[1]
 y_train = np.array([np.array(yi) for yi in y_train])
 nb_classes = y_train.shape[1]

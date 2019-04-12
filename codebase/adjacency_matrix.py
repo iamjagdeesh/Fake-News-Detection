@@ -59,7 +59,7 @@ class AdjacencyMatrix:
 
         print("Done")
 
-        return result_df
+        return result_df.iloc[:422, :422]
 
 
 if __name__ == "__main__":
