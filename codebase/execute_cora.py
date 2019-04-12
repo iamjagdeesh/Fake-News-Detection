@@ -39,7 +39,7 @@ gat_ip = GATInputGenerator()
 adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = gat_ip.getComps()
 features, spars = process.preprocess_features(features)
 
-nb_nodes = features.shape[0]
+nb_nodes = adj.shape[0] # = features.shape[0]
 ft_size = features.shape[1]
 y_train = np.array([np.array(yi) for yi in y_train])
 nb_classes = y_train.shape[1]
