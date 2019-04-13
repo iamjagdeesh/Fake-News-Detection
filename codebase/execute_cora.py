@@ -12,7 +12,7 @@ dataset = 'cora'
 
 # training params
 batch_size = 1
-nb_epochs = 100
+nb_epochs = 10000
 patience = 100
 lr = 0.005  # learning rate
 l2_coef = 0.0005  # weight decay

@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.sparse as sp
+import pandas as pd
 from codebase.adjacency_matrix import AdjacencyMatrix
 from codebase.feature_matrix import FeatureMatrix
 
@@ -11,10 +12,10 @@ class GATInputGenerator:
         self.label_zip = None
 
     def getAdj(self):
-        adj_df = self.AM.get_adjacency_matrix()
+        # adj_df = self.AM.get_adjacency_matrix()
         # feature_df = self.FM.get_feature_matrix()
-        print(adj_df.shape)
-        adj_np = adj_df.values
+        # print(adj_df.shape)
+        # adj_np = adj_df.values
         """print(type(adj_np))
         res = []
         for i in range(adj_np.shape[0]):
@@ -31,7 +32,12 @@ class GATInputGenerator:
         #for each in res:
          #   each.extend([0] * (max_len - len(each)))"""
 
-        return sp.csr_matrix(adj_np, dtype=float)
+        # Check start
+        adj_np = np.zeros(shape=(422, 422))
+        adj_np = pd.read_csv("../dataset/news_news_adjacency_matrix.csv", header=None).values
+        # Check end
+
+        return sp.csr_matrix(adj_np, dtype=int)
 
     def getFeatures(self):
         feature_df = self.FM.get_feature_matrix()
@@ -58,8 +64,12 @@ class GATInputGenerator:
 
 
     def getYs(self):
-        yTrain = yVal = yTest = self.label_zip[:]
-        train_mask = val_mask = test_mask = [False] * len(yTrain)
+        yTrain = self.label_zip[:]
+        yVal = self.label_zip[:]
+        yTest = self.label_zip[:]
+        train_mask = [False] * len(yTrain)
+        val_mask = [False] * len(yTrain)
+        test_mask = [False] * len(yTrain)
         n = len(yTrain)
         train_range = range(0, int(n * 0.5))
         val_range = range(int(n * 0.5), int(n * 0.75))
