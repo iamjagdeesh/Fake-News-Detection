@@ -6,6 +6,9 @@ import argparse
 from codebase.models import GAT
 from codebase.models import SpGAT
 from codebase.utils import process
+from codebase.models import GAT
+from codebase.utils import process
+from codebase.gat_adj_features import GATInputGenerator
 
 checkpt_file = 'pre_trained/cora/mod_cora.ckpt'
 
@@ -37,13 +40,21 @@ print('nonlinearity: ' + str(nonlinearity))
 print('model: ' + str(model))
 
 sparse = True
+gat_ip = GATInputGenerator()
 
-adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = process.load_data(dataset)
+adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask = gat_ip.getComps()
 features, spars = process.preprocess_features(features)
 
-nb_nodes = features.shape[0]
+nb_nodes = adj.shape[0] # = features.shape[0]
+nb_feature_rows = features.shape[0]
 ft_size = features.shape[1]
+y_train = np.array([np.array(yi) for yi in y_train])
+y_val = np.array([np.array(yi) for yi in y_val])
+y_test = np.array([np.array(yi) for yi in y_test])
 nb_classes = y_train.shape[1]
+train_mask = np.array(train_mask)
+val_mask = np.array(val_mask)
+test_mask = np.array(test_mask)
 
 features = features[np.newaxis]
 y_train = y_train[np.newaxis]
