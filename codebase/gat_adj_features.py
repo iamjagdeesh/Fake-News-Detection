@@ -3,12 +3,15 @@ import scipy.sparse as sp
 import pandas as pd
 from codebase.adjacency_matrix import AdjacencyMatrix
 from codebase.feature_matrix import FeatureMatrix
+from codebase.news_news_matrix_construction import NewsNewsMatrix
+import random
 
 class GATInputGenerator:
     def __init__(self):
         self.gat = "cora"
         self.AM = AdjacencyMatrix(base_path = "../dataset/")
         self.FM = FeatureMatrix(base_path = "../dataset/")
+        self.NN = NewsNewsMatrix(base_path = "../dataset/")
         self.label_zip = None
 
     def getAdj(self):
@@ -33,8 +36,10 @@ class GATInputGenerator:
          #   each.extend([0] * (max_len - len(each)))"""
 
         # Check start
-        adj_np = np.zeros(shape=(422, 422))
+        #adj_np = np.zeros(shape=(422, 422))
         adj_np = pd.read_csv("../dataset/news_news_adjacency_matrix.csv", header=None).values
+        # adj_np = pd.read_csv("../dataset/news_news_pf_adjacency_matrix.csv", header=None).values
+        # adj_np = self.NN.get_news_news_mat()
         # Check end
 
         return sp.csr_matrix(adj_np, dtype=int)
@@ -71,9 +76,20 @@ class GATInputGenerator:
         val_mask = [False] * len(yTrain)
         test_mask = [False] * len(yTrain)
         n = len(yTrain)
-        train_range = range(0, int(n * 0.5))
-        val_range = range(int(n * 0.5), int(n * 0.75))
-        test_range = range(int(n * 0.75), n)
+        # train_range = range(0, int(n * 0.85))
+        # val_range = range(int(n * 0.85), int(n * 0.90))
+        # test_range = range(int(n * 0.90), n)
+
+        set_of_records_range = set(range(n))
+
+        train_range = set(random.sample(set_of_records_range, k=int(n * 0.80)))
+        set_of_records_range = set_of_records_range - train_range
+
+        val_range = set(random.sample(set_of_records_range, k=int(n * 0.1)))
+        set_of_records_range = set_of_records_range - train_range
+
+        test_range = set(random.sample(set_of_records_range, k=int(n * 0.1)))
+        # set_of_records_range = set_of_records_range - val_range
 
         for i in train_range:
             yVal[i] = (0,0)

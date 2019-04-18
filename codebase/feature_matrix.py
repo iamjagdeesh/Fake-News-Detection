@@ -35,12 +35,12 @@ class FeatureMatrix:
         print("Fetching BuzzFeed data")
         bf_data_df = self.get_folder_data("BuzzFeed")
 
-        print("Fetching PolitiFact data")
-        pf_data_df = self.get_folder_data("PolitiFact")
+        # print("Fetching PolitiFact data")
+        # pf_data_df = self.get_folder_data("PolitiFact")
 
-        all_data_df = pd.concat([bf_data_df, pf_data_df])
+        # all_data_df = pd.concat([bf_data_df, pf_data_df])
 
-        return all_data_df
+        return bf_data_df
 
     def create_tokenizer_from_hub_module(self):
         with tf.Graph().as_default():
