@@ -1,9 +1,7 @@
-import numpy as np
 import scipy.sparse as sp
 import pandas as pd
 from codebase.adjacency_matrix import AdjacencyMatrix
 from codebase.feature_matrix import FeatureMatrix
-from codebase.news_news_matrix_construction import NewsNewsMatrix
 import random
 
 class GATInputGenerator:
@@ -11,10 +9,9 @@ class GATInputGenerator:
         self.gat = "cora"
         self.AM = AdjacencyMatrix(base_path = "../dataset/")
         self.FM = FeatureMatrix(base_path = "../dataset/")
-        self.NN = NewsNewsMatrix(base_path = "../dataset/")
         self.label_zip = None
 
-    def getAdj(self):
+    def getAdj(self, dataset="BuzzFeed"):
         # adj_df = self.AM.get_adjacency_matrix()
         # feature_df = self.FM.get_feature_matrix()
         # print(adj_df.shape)
@@ -37,15 +34,17 @@ class GATInputGenerator:
 
         # Check start
         #adj_np = np.zeros(shape=(422, 422))
-        adj_np = pd.read_csv("../dataset/news_news_adjacency_matrix.csv", header=None).values
-        # adj_np = pd.read_csv("../dataset/news_news_pf_adjacency_matrix.csv", header=None).values
+        if dataset == "BuzzFeed":
+            adj_np = pd.read_csv("../dataset/news_news_bf_adjacency_matrix.csv", header=None).values
+        else:
+            adj_np = pd.read_csv("../dataset/news_news_pf_adjacency_matrix.csv", header=None).values
         # adj_np = self.NN.get_news_news_mat()
         # Check end
 
         return sp.csr_matrix(adj_np, dtype=int)
 
-    def getFeatures(self):
-        feature_df = self.FM.get_feature_matrix()
+    def getFeatures(self, dataset="BuzzFeed"):
+        feature_df = self.FM.get_feature_matrix(dataset)
         # print(adj_df.shape)
         label = feature_df['label'].tolist()
         label_comp = [0 if each else 1 for each in label]
@@ -68,7 +67,11 @@ class GATInputGenerator:
         return sp.csr_matrix(feature_np, dtype=float).tolil()
 
 
-    def getYs(self):
+    def getYs(self, dataset="BuzzFeed"):
+        if dataset == "BuzzFeed":
+            random.seed(1)
+        else:
+            random.seed(1)
         yTrain = self.label_zip[:]
         yVal = self.label_zip[:]
         yTest = self.label_zip[:]
@@ -106,11 +109,11 @@ class GATInputGenerator:
 
         return yTrain, yVal, yTest, train_mask, val_mask, test_mask
 
-    def getComps(self):
-        adj = self.getAdj()
-        features = self.getFeatures()
+    def getComps(self, dataset="BuzzFeed"):
+        adj = self.getAdj(dataset)
+        features = self.getFeatures(dataset)
 
-        yTrain, yVal, yTest, train_mask, val_mask, test_mask = self.getYs()
+        yTrain, yVal, yTest, train_mask, val_mask, test_mask = self.getYs(dataset)
 
         return adj, features, yTrain, yVal, yTest, train_mask, val_mask, test_mask
 

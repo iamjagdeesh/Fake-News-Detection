@@ -52,8 +52,8 @@ class FeatureMatrix:
 
         return tokenization.FullTokenizer(vocab_file=vocab_file, do_lower_case=do_lower_case)
 
-    def get_feature_matrix(self):
-        all_data_df = self.get_all_data()
+    def get_feature_matrix(self, dataset = "BuzzFeed"):
+        all_data_df = self.get_folder_data(folder=dataset)
         all_data_df = all_data_df.sample(frac=1)
 
         inputExamples = all_data_df.apply(lambda x: run_classifier.InputExample(guid=None,
@@ -77,7 +77,7 @@ class FeatureMatrix:
 
 
 if __name__ == "__main__":
-    base_path = "/Users/achayapathy/Documents/Aditya/repositories/Fake-News-Detection/dataset/"
+    base_path = "../dataset/"
 
     adj = FeatureMatrix(base_path)
     res = adj.get_feature_matrix()
