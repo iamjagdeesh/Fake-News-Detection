@@ -2,6 +2,7 @@ import scipy.sparse as sp
 import pandas as pd
 from codebase.adjacency_matrix import AdjacencyMatrix
 from codebase.feature_matrix import FeatureMatrix
+from sklearn.preprocessing import MinMaxScaler
 import random
 
 class GATInputGenerator:
@@ -51,6 +52,7 @@ class GATInputGenerator:
         self.label_zip = list(zip(label_comp, label))
         feature_df.drop(['label'], axis=1)
         feature_np = feature_df.values
+        # feature_np = MinMaxScaler().fit_transform(feature_np)
         # print(type(feature_np))
         #res = [list(xi) for xi in feature_np]
         #for i in range(feature_np.shape[0]):
@@ -85,13 +87,13 @@ class GATInputGenerator:
 
         set_of_records_range = set(range(n))
 
-        train_range = set(random.sample(set_of_records_range, k=int(n * 0.80)))
+        train_range = set(random.sample(set_of_records_range, k=int(n * 0.6)))
         set_of_records_range = set_of_records_range - train_range
 
-        val_range = set(random.sample(set_of_records_range, k=int(n * 0.1)))
+        val_range = set(random.sample(set_of_records_range, k=int(n * 0.2)))
         set_of_records_range = set_of_records_range - train_range
 
-        test_range = set(random.sample(set_of_records_range, k=int(n * 0.1)))
+        test_range = set(random.sample(set_of_records_range, k=int(n * 0.2)))
         # set_of_records_range = set_of_records_range - val_range
 
         for i in train_range:
@@ -110,6 +112,7 @@ class GATInputGenerator:
         return yTrain, yVal, yTest, train_mask, val_mask, test_mask
 
     def getComps(self, dataset="BuzzFeed"):
+        print(dataset)
         adj = self.getAdj(dataset)
         features = self.getFeatures(dataset)
 
@@ -119,4 +122,4 @@ class GATInputGenerator:
 
 if __name__ == "__main__":
     obj = GATInputGenerator()
-    obj.getComps()
+    obj.getComps(dataset="BuzzFeed")

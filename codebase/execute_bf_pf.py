@@ -5,15 +5,15 @@ from codebase.models import GAT
 from codebase.utils import process
 from codebase.gat_adj_features import GATInputGenerator
 
-dataset = "PolitiFact" # Options = "BuzzFeed", "PolitiFact"
+dataset = "BuzzFeed" # Options = "BuzzFeed", "PolitiFact"
 if dataset == "BuzzFeed":
     checkpt_file = 'pre_trained/BuzzFeed/mod_BuzzFeed.ckpt'
     lr = 0.01
-    l2_coef = 0.001
+    l2_coef = 0.0005
 else:
     checkpt_file = 'pre_trained/PolitiFact/mod_PolitiFact.ckpt'
     lr = 0.01
-    l2_coef = 0.001
+    l2_coef = 0.005
 
 # training params
 batch_size = 1

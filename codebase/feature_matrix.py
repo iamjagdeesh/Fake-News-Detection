@@ -80,4 +80,4 @@ if __name__ == "__main__":
     base_path = "../dataset/"
 
     adj = FeatureMatrix(base_path)
-    res = adj.get_feature_matrix()
+    res = adj.get_feature_matrix("PolitiFact")
