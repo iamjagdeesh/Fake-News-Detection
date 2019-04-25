@@ -1,11 +1,18 @@
 import numpy as np
 import tensorflow as tf
+import argparse
 
-from codebase.models import GAT
-from codebase.utils import process
-from codebase.gat_adj_features import GATInputGenerator
+from models import GAT
+from utils import process
+from gat_adj_features import GATInputGenerator
 
-dataset = "BuzzFeed" # Options = "BuzzFeed", "PolitiFact"
+parser = argparse.ArgumentParser(
+    description='Task: Fake news detection, File: execute_bf_pf.py Datasets: BuzzFeed, PolitiFact',
+)
+parser.add_argument('dataset', action="store", choices=set(('BuzzFeed', 'PolitiFact')))
+input = vars(parser.parse_args())
+dataset = input['dataset']
+
 if dataset == "BuzzFeed":
     checkpt_file = 'pre_trained/BuzzFeed/mod_BuzzFeed.ckpt'
     lr = 0.01

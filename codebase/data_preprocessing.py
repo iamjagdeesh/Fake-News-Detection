@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 import json
-import tokenizer
 import bert.extract_features as xf
 import tokenization
 class DataPreProcessing(object):

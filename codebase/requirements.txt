@@ -1,0 +1,13 @@
+tensorflow
+tensorflow-hub
+tensorflow-estimator
+argparse
+networkx
+scipy
+pandas
+scikit-learn
+pickleshare
+nltk
+jsonschema
+h5py
+cloudpickle
