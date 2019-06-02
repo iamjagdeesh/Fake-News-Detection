@@ -10,9 +10,15 @@
 5. Jagdeesh Basavaraju (ASU ID: 1213004713)
 
 ## Description
-1. "codebase" folder contains the code for the project.
-2. "dataset" folder contains the dataset used for the project.
-3. "evaluation" folder contains the evaluation results of the project.
+The project aims at classifying the given news articles as fake or true based on the content and users associated with it using Graph Attention Networks (GATs).
+
+1. Extracted the content of news articles from the given dataset.
+2. Vectorized the news article content using BERT to obtain feature vector for every article.
+3. Derived relationship among news articles based on the users the articles are associated with.
+4. Classified the news articles by feeding the feature vectors and relationship matrix to the GAT.
+5. Compared and contrasted the performance of GAT against traditional machine learning algorithms.
+
+Technology used: Google BERT, Graph Attention Network (GAT), Python, Pandas, NumPy, scikit-learn, Tensorflow
 
 ## Steps to execute
 1. Go to the folder named "codebase".
